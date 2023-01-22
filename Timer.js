@@ -1,16 +1,17 @@
 import  React  from 'react'
-import  {View,Button,Text,StyleSheet}  from  'react-native'
+import  {View,Button,Text,StyleSheet,Vibration}  from  'react-native'
+
+var interval;
 
 export default  class Timer extends  React.Component{
     state = {
-        minutes:25,
+        minutes:1,
         seconds:0,
-        time:1500
+        time:60,
     }
    
-    componentDidMount(){
-        
-        const interval = setInterval(()=>{
+    handleStart=()=>{
+         interval = setInterval(()=>{
              this.startTimer()
         },1000)
     }
@@ -21,13 +22,16 @@ export default  class Timer extends  React.Component{
                 time:this.state.time-1
             }))
         }
-        componentWillUnmount(){
-            clearInterval(this.interval)
+        
+        handleStop = ()=>{
+                clearInterval(interval)
         }
     render(){
         return(
               <View style={styles.appContainer}>
                 <Text style={styles.textElement}>{this.state.minutes<10?"0"+this.state.minutes:this.state.minutes}  :  {this.state.seconds<10?"0"+this.state.seconds:this.state.seconds}</Text>
+               <Button  title="Start" onPress={this.handleStart} style={styles.button} />
+               <Button  title="Stop"  onPress={this.handleStop} style={styles.button}/>
               </View>
         )
     }
@@ -41,5 +45,13 @@ const styles = StyleSheet.create({
    },
    textElement:{
     fontSize:48,
+   },
+   button:{
+    border: "2 solid black",
+    borderRadius:"2"
+   },
+   buttonContainer:{
+    flex:1,
+    flexDirection:"row",
    }
 })
