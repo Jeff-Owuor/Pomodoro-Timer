@@ -9,7 +9,7 @@ export default  class Timer extends  React.Component{
         minutes:1,
         seconds:0,
         time:60,
-        
+        isChecked:false,
     }
     oneSecondInMs=1000
     pattern =[
@@ -27,12 +27,19 @@ export default  class Timer extends  React.Component{
             this.setState(prevState => ({
                 minutes:Math.floor(prevState.time/60),
                 seconds: prevState.time%60,
-                time:this.state.time-1
+                time:this.state.time-1,
+                isChecked:false
             }))
         }
         
         handleStop = ()=>{
                 clearInterval(interval)
+                this.setState({
+                    isChecked:true
+                })
+        }
+        handleReset = () => {
+
         }
     render(){
         if(this.state.time == 0){
@@ -49,8 +56,15 @@ export default  class Timer extends  React.Component{
                 <Text style={styles.textElement}>Focus Time</Text>
                 {this.state.time == 0 && <BreakTimer/>}
                   <Text style={styles.textElement}>{this.state.minutes<10?"0"+this.state.minutes:this.state.minutes}  :  {this.state.seconds<10?"0"+this.state.seconds:this.state.seconds}</Text>
+                  <View style={styles.buttonContainer}>
                  <Button  title="Start" onPress={this.handleStart} style={styles.button} />
                  <Button  title="Stop"  onPress={this.handleStop} style={styles.button}/>
+                 {
+                    this.state.isChecked   &&
+                 <Button  title="Reset"  onPress={this.handleReset}/>
+                 }
+                 </View>   
+                 
                 </View>
           )
         }
@@ -74,7 +88,6 @@ const styles = StyleSheet.create({
     borderRadius:"2"
    },
    buttonContainer:{
-    flex:1,
     flexDirection:"row",
    }
 })
